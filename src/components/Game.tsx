@@ -89,7 +89,7 @@ function getEmptyAroundIndexes(index: number, ignore?: number[]): number[] {
   const empties: number[] = result.filter(
     (idx) => initialCells[idx].children === 0
   );
-  ignore = (ignore ?? []).concat(...result, index);
+  ignore = (ignore ?? []).concat(...empties, index);
   empties.forEach((emp) => {
     result.push(...getEmptyAroundIndexes(emp, ignore));
   });
