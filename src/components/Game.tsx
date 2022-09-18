@@ -74,7 +74,7 @@ const Cell: FC<
   PropsWithChildren & { type: ECellType; onUnlock: () => void }
 > = (props) => {
   return (
-    <div className={`cell ${props.type}`} onClick={props.onUnlock}>
+    <div className={`cell ${props.type}`} onMouseDown={props.onUnlock}>
       {props.type === ECellType.UNLOCKED ? props.children : null}
     </div>
   );
