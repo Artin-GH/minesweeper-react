@@ -4,7 +4,7 @@ import Game from "./components/Game";
 import Title from "./components/Title";
 
 function App() {
-  const [titleText, setTitleText] = useState("Start playing!");
+  const [titleText, setTitleText] = useState("Good luck!");
 
   return (
     <div className="app">
