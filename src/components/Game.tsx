@@ -1,4 +1,4 @@
-import { FC, PropsWithChildren, useEffect, useState } from "react";
+import { FC, PropsWithChildren, useRef, useState } from "react";
 import { range } from "../utils";
 
 enum ECellType {
@@ -19,32 +19,24 @@ const mineCount = 40;
 const { cells: initialCells, mineIndexes } = getInitialState();
 const Game: FC<{ onWin: () => void; onLose: () => void }> = (props) => {
   const [cells, setCells] = useState(initialCells);
-  const [isPause, setIsPause] = useState(false);
+  const isPause = useRef(false);
 
-  const checkWin = () => {
+  if (!isPause.current) {
     if (
       cells.filter((cell) => cell.type === ECellType.LOCKED && !cell.isMine)
         .length === 0
     ) {
-      setIsPause(true);
+      isPause.current = true;
       props.onWin();
-      return true;
     }
-    return false;
-  };
-
-  useEffect(() => {
-    if (isPause) return;
-    checkWin();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [cells]);
+  }
 
   const handleUnlock = (i: number) => {
-    if (isPause) return;
+    if (isPause.current) return;
     const newCells: ICell[] = JSON.parse(JSON.stringify(cells));
     if (newCells[i].isMine) {
       mineIndexes.forEach((index) => (newCells[index].type = ECellType.WRONG));
-      setIsPause(true);
+      isPause.current = true;
       props.onLose();
     } else if (newCells[i].children === 0) {
       newCells[i].type = ECellType.UNLOCKED;
